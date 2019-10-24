@@ -8,6 +8,7 @@ import fileinput
 app = Flask(__name__)
 app.debug = True
 
+# Routes
 
 @app.route('/')
 def index():
@@ -33,7 +34,7 @@ def save_credentials():
     wifi_key = request.form['wifi_key']
 
     create_wpa_supplicant(ssid, wifi_key)
-    
+
     # Call set_ap_client_mode() in a thread otherwise the reboot will prevent
     # the response from getting to the browser
     def sleep_and_start_ap():
@@ -66,10 +67,17 @@ def save_wpa_credentials():
     config_hash = config_file_hash()
     return render_template('save_wpa_credentials.html', wpa_enabled = config_hash['wpa_enabled'], wpa_key = config_hash['wpa_key'])
 
+@app.route('/setup_block', methods = ['POST'])
+def setup_block():
+    uuid = request.form['uuid']
+    name = request.form['name']
+
+    with open('/home/pi/projects/push/.env', 'w') as file:
+        file.write('JUL_UUID=' + uuid + '\n')
+        file.write('JUL_NAME=' + name + '\n')
 
 
-
-######## FUNCTIONS ##########
+# Functions
 
 def scan_wifi_networks():
     iwlist_raw = subprocess.Popen(['iwlist', 'scan'], stdout=subprocess.PIPE)
@@ -141,6 +149,7 @@ def config_file_hash():
 
     return config_hash
 
+# Main
 
 if __name__ == '__main__':
     config_hash = config_file_hash()
