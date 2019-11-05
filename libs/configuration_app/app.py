@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 import subprocess
 import os
 import time
@@ -79,6 +79,8 @@ def setup_block():
         file.write('JUL_NAME=' + name + '\n')
         file.write('PUSHER_APP_KEY=' + pusher_key + '\n')
         file.write('PUSHER_APP_CLUSTER=' + pusher_cluster + '\n')
+
+    return jsonify(uuid=uuid)
 
 
 # Functions
