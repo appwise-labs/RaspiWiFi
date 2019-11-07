@@ -71,12 +71,14 @@ def save_wpa_credentials():
 def setup_block():
     uuid = request.form['uuid']
     name = request.form['name']
+    server = request.form['url']
     pusher_key = request.form['pusher_key']
     pusher_cluster = request.form['pusher_cluster']
 
     with open('/home/pi/projects/push/.env', 'w') as file:
         file.write('JUL_UUID=' + uuid + '\n')
         file.write('JUL_NAME=' + name + '\n')
+        file.write('JUL_SERVER=' + server + '\n')
         file.write('PUSHER_APP_KEY=' + pusher_key + '\n')
         file.write('PUSHER_APP_CLUSTER=' + pusher_cluster + '\n')
 
