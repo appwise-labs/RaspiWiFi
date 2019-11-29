@@ -75,12 +75,16 @@ def setup_block():
     pusher_key = request.form['pusher_key']
     pusher_cluster = request.form['pusher_cluster']
 
+    # create configuration file
     with open('/home/pi/projects/push/jul/.env', 'w') as file:
         file.write('JUL_UUID=' + uuid + '\n')
         file.write('JUL_NAME=' + name + '\n')
         file.write('JUL_SERVER=' + server + '\n')
         file.write('PUSHER_APP_KEY=' + pusher_key + '\n')
         file.write('PUSHER_APP_CLUSTER=' + pusher_cluster + '\n')
+
+    # create identity file
+    os.system('ssh-keygen -t rsa -b 1024 -N \'\' -f /home/pi/projects/push/jul/identity');
 
     return jsonify(uuid=uuid)
 
